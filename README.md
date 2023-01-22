@@ -1,6 +1,6 @@
 # Tweet miner
 
-# create a virutal enviorment
+# Enter the virutal enviorment
 Mac:
 `source env/Scripts/activate` \
 Windows:
