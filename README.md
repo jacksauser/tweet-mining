@@ -2,6 +2,6 @@
 
 # create a virutal enviorment
 Mac:
-`source env/bin/activate` \
+`source env/Scripts/activate` \
 Windows:
 `env\Scripts\activate`
