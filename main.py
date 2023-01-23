@@ -37,7 +37,7 @@ regex_host = r'(?i)host'
 regex_award  = r'(?i)award'
 regex_presenter = r'(?i)presenter'
 regex_nominee = r'(?i)nominee'
-regex_winner = r'(?i)winner'
+regex_winner = r'(?i)winner|won'
 regex_remove = r'^RT\s|RT|^@\w+\s|(?i)goldenglobes|(?i)golden globes'
 
 host_names_potential = []
@@ -46,7 +46,7 @@ host_names_potential = []
 for i in data:
     t = i['text']
     u = i['user']
-    if re.search(regex_award, t) and u['screen_name'] != 'goldenglobes':
+    if re.search(regex_host, t) and u['screen_name'] != 'goldenglobes':
         t = re.sub(regex_remove, '', t)
         nltk_output = ne_chunk(pos_tag(word_tokenize(t)))
         print(nltk_output)
