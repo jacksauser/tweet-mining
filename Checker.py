@@ -94,6 +94,86 @@ class checker:
             return m2
         else:
             return 0
+
+    def checkActor(self, input):
+        a = self.actorDict.get(input, -1)
+        #m = self.movieDict.get(input, -1)
+        
+        # If an actor or a movie is not in the dictionary and is close enough to
+        # the IMDb name, it gets added to the dictionary with the name as the value.
+        # Otherwise, it gets a 0, meaning no match or too broad
+        # This uses Levenshtein distance and accepts anything above a 70% similarity
+        if a == -1:
+            act = self.isActor(input)
+            if act and act != -1:
+                rat = fuzz.ratio(input, act)
+                if rat>=70:
+                    self.actorDict[input] = act
+            else:
+                self.actorDict[input] = 0
+        
+        # if m == -1:
+        #     mov = self.isMovie(input)
+        #     if mov and mov != -1:
+        #         rat = fuzz.ratio(input, mov)
+        #         if rat>=70:
+        #             self.movieDict[input] = mov
+        #     else:
+        #         self.movieDict[input] = 0
+
+        # 1 is if the actor/movie is valid
+        # 0 is if there was no match/too broad of a search
+        # -1 is if the key is not in the dictionary yet
+        
+        a2 = self.actorDict.get(input, -1)
+        #m2 = self.movieDict.get(input, -1)
+
+        if a2 != 0 and a2 != -1:
+            return a2
+        #elif m2 != 0 and m2 != -1:
+        #    return m2
+        else:
+            return 0
+
+    def checkMovie(self, input):
+        #a = self.actorDict.get(input, -1)
+        m = self.movieDict.get(input, -1)
+        
+        # If an actor or a movie is not in the dictionary and is close enough to
+        # the IMDb name, it gets added to the dictionary with the name as the value.
+        # Otherwise, it gets a 0, meaning no match or too broad
+        # This uses Levenshtein distance and accepts anything above a 70% similarity
+        # if a == -1:
+        #     act = self.isActor(input)
+        #     if act and act != -1:
+        #         rat = fuzz.ratio(input, act)
+        #         if rat>=70:
+        #             self.actorDict[input] = act
+        #     else:
+        #         self.actorDict[input] = 0
+        
+        if m == -1:
+            mov = self.isMovie(input)
+            if mov and mov != -1:
+                rat = fuzz.ratio(input, mov)
+                if rat>=70:
+                    self.movieDict[input] = mov
+            else:
+                self.movieDict[input] = 0
+
+        # 1 is if the actor/movie is valid
+        # 0 is if there was no match/too broad of a search
+        # -1 is if the key is not in the dictionary yet
+        
+        #a2 = self.actorDict.get(input, -1)
+        m2 = self.movieDict.get(input, -1)
+
+        #if a2 != 0 and a2 != -1:
+        #    return a2
+        if m2 != 0 and m2 != -1:
+            return m2
+        else:
+            return 0
         
 # Quick testing function
 actor = input("Enter a name: ")
