@@ -161,6 +161,10 @@ regex_should = r'(?i)should\shave\swon|should\'ve\swon'
 
 host = getNames(getDistribution(dataSearch(regex_host)))
 
+values = list(host.values())
+mean_value = sum(values) / len(values)
+host = {key:value for (key, value) in host.items() if value > mean_value}
+
 awards = getAwards(getDistribution(dataSearch(regex_award)))
 
 
