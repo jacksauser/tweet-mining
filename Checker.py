@@ -176,7 +176,7 @@ class checker:
             return 0
         
 # Quick testing function
-actor = input("Enter a name: ")
-check = checker('Golden Globes',2013)
-a = check.checkMovie(actor)
-print(a)
+# actor = input("Enter a name: ")
+# check = checker('Golden Globes',2013)
+# a = check.checkMovie(actor)
+# print(a)
