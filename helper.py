@@ -4,7 +4,7 @@ import json
 import nltk
 import re
 import nameparser
-
+import Checker
 
 from nameparser import HumanName
 
@@ -25,6 +25,7 @@ regex_remove_rt = '^RT @\w+: '
 regex_remove_link = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
 regex_remove_gg = '#GoldenGlobes'
 
+checker = Checker('Golden Globes', '2013')
 
 def dataSearch(regex):
     l = []
@@ -175,3 +176,11 @@ def get_outliers(d):
     values = list(d.values())
     mean_value = sum(values) / len(values)
     return {key:value for (key, value) in d.items() if value > mean_value}
+
+def actorFilter(d):
+    vals = {key:value for (key, value) in d.items() if checker.checkActor(key)}
+    return vals
+
+def movieFilter(d):
+    vals = {key:value for (key, value) in d.items() if checker.checkMovie(key)}
+    return vals
