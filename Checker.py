@@ -107,7 +107,7 @@ class checker:
             act = self.isActor(input)
             if act and act != -1:
                 rat = fuzz.ratio(input, act)
-                if rat>=70:
+                if rat>=80:
                     self.actorDict[input] = act
             else:
                 self.actorDict[input] = 0
@@ -156,7 +156,7 @@ class checker:
             mov = self.isMovie(input)
             if mov and mov != -1:
                 rat = fuzz.ratio(input, mov)
-                if rat>=70:
+                if rat>80:
                     self.movieDict[input] = mov
             else:
                 self.movieDict[input] = 0
@@ -178,5 +178,5 @@ class checker:
 # Quick testing function
 actor = input("Enter a name: ")
 check = checker('Golden Globes',2013)
-a = check.checkDict(actor)
+a = check.checkMovie(actor)
 print(a)
