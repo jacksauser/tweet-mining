@@ -29,7 +29,10 @@ regex_remove = r'^RT\s|\sRT|(?i)goldenglobes|(?i)golden\sglobes'
 regex_best = r'(?i)best'
 regex_goes_to = r'(?i)goes\sto'
 regex_should = r'(?i)should\shave\swon|should\'ve\swon'
-
+regex_funniest = r'(?i)funniest|funny|hilarious'
+regex_deserve = r'(?i)deserve'
+regex_dressed = r'(?i)best\sdressed|beautiful|handsome|sexy|stunning|pretty|hot|looking\sgood'
+regex_name = r'[A-Z][a-z]+\s[A-Z][a-z]+'
 
 regex_award_exact = r'(?i)best\sperformances\sby\san\sactor\sin\sa\ssupporting\srole\sin\sa\smotion\spicture'
 
@@ -61,7 +64,23 @@ regex_award_exact = r'(?i)best\sperformances\sby\san\sactor\sin\sa\ssupporting\s
 # print(potential_winners)
 
 
-print_helper(dataSearch2(regex_best,regex_goes_to))
+#print_helper(dataSearch2(regex_best,regex_goes_to))
+
+# # This outputs best dressed:
+# thing = dataSearch2(regex_dressed, regex_name)
+# output = {}
+# for i in thing:
+#     tweet = i[1]
+#     name = re.findall(regex_name, tweet)
+#     for n in name:
+#         if n in output:
+#             output[n] += 1
+#         else:
+#             output[n] = 1
+# output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:9])
+# print(output2[:5])
+
+
 
 
 
