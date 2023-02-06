@@ -60,8 +60,8 @@ def dataSearch2(regex1, regex2):
             t = re.sub(regex_remove_gg, '', t)
             nltk_output = pos_tag(word_tokenize(t))
             # print(nltk_output)
-            l.append([nltk_output,re.split(regex2,t)]) #!!!Needed for awards and winners
-            # l.append([nltk_output,t])
+            # l.append([nltk_output,re.split(regex2,t)]) #!!!Needed for awards and winners
+            l.append([nltk_output,t])
             # printTweet(t)
             # for line in nltk_output:                
                 # if type(line) == Tree:
@@ -183,11 +183,12 @@ def getDistribution(l, regex = ".*"):
                 else:
                     dict_[s] = 1
         else:
-            if re.search(regex, i):
-                if i in dict_:
-                    dict_[i] += 1
-                else:
-                    dict_[i] = 1
+            if i != None:
+                if re.search(regex, i):
+                    if i in dict_:
+                        dict_[i] += 1
+                    else:
+                        dict_[i] = 1
     ret = dict(sorted(dict_.items(), key=lambda item: item[1], reverse=True))
     return ret
 
@@ -204,8 +205,9 @@ def isFullName(s, l = []):
     # if human_name.first and human_name.last:
 
     name = s.split(" -- ")[0]
-    if (re.search("\w+\s+\w+\s$",name) or re.search("\w+\s+\w$",name)) and name not in l:
-        # print(s)
+    
+    if re.search(r"\w+\s+\w",name):
+        
         return True
     else:
         return False
@@ -361,3 +363,71 @@ def additional_goals(regex_dressed, regex_worst_dressed, regex_name, regex_funni
     print('Most Snubbed: ' + ', '.join(str(x) for x in most_snubbed))
     print()
     print()
+
+def nomineeGetter(allawards):
+    dat = allawards
+    awardtype = {}
+    awardUseful = {}
+    output = {}
+    awardNoms = {}
+    stopword = ['best','-','in','a','role','golden','globes','globe']
+    for i in dat:
+        if 'actor' in i or 'actress' in i or 'director' in i or 'cecil' in i:
+            awardtype[i] = 'Person'
+        else:
+            awardtype[i] = 'Film'
+        
+    for i in dat:
+        ls = [w for w in i.split() if not w in stopword]
+        #half = len(ls) // 2 + len(ls) % 2
+        regex = ".*(?=.*{}).*".format(")(?=.*".join(ls))
+        #regex = re.compile("&".join(ls))
+        awardUseful[i] = regex
+
+    for i in dat:
+        #if awardtype[i].equals('Person'):
+        regex_curr = awardUseful[i]
+        
+        tw = dataSearch2(regex_curr, regex_curr)
+        for j in tw:
+            tweet = str(j)
+            names = re.findall(c.regex_name, tweet)
+            for n in names:
+                if n in output:
+                    output[n] += 1
+                else:
+                    output[n] = 1
+        output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:20])
+        final = output2[:6]
+        awardNoms[i] = final
+    return awardNoms
+        
+        
+def presenterGetter(allawards):
+    dat = allawards
+    awardUseful = {}
+    output = {}
+    awardPresenters = {}
+    stopword = ['best','-','in','a','role','golden','globes','globe']
+        
+    for i in dat:
+        ls = [w for w in i.split() if not w in stopword]
+        regex = ".*(?=.*{}).*".format(")(?=.*".join(ls))
+        awardUseful[i] = regex
+
+    for i in dat:
+        regex_curr = awardUseful[i]
+        tw = dataSearch2(c.regex_presenter, regex_curr)
+        for j in tw:
+            tweet = str(j)
+            names = re.findall(c.regex_name, tweet)
+            for n in names:
+                if n in output:
+                    output[n] += 1
+                else:
+                    output[n] = 1
+        output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:10])
+        final = output2[:2]
+        awardPresenters[i] = final
+        print(final)
+    return awardPresenters

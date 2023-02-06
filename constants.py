@@ -15,3 +15,4 @@ regex_name = r'[A-Z][a-z]+\s[A-Z][a-z]+'
 regex_worst_dressed = r'(?i)worst\sdressed|ugly|gross|bad\slooking|bad\soutfit|disgusting|unappealing'
 
 regex_award_exact = r'(?i)best\sperformances\sby\san\sactor\sin\sa\ssupporting\srole\sin\sa\smotion\spicture'
+regex_presenter = r'(?i)presenter|presented|presents'
