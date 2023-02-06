@@ -72,7 +72,27 @@ def main():
     and then run gg_api.main(). This is the second thing the TA will
     run when grading. Do NOT change the name of this function or
     what it returns.'''
-    # Your code here
+    hosts = get_hosts(2013)
+    awards = get_awards(2013)
+    nominees = get_nominees(2013)
+    winners = get_winner(2013)
+    presenters = get_presenters(2013)
+
+    gg = awardshow.AwardShow('Golden Globes', 2013)
+    for i in hosts:
+        gg.addHost(i)
+
+    for i in OFFICIAL_AWARDS_1315:
+        x = awardshow.Award()
+        x.awardName = awards[i]
+        x.nominees = nominees[i]
+        x.presenters = presenters[i]
+        x.winner = winners[i]
+        gg.addAward(x)
+    
+    gg.print_readable
+
+
     return
 
 if __name__ == '__main__':
