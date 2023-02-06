@@ -1,5 +1,5 @@
 from helper import *
-
+import awardshow
 
 # collecting the award show queried and year
 award_show = input("What award show? ")
@@ -14,51 +14,25 @@ if not year:
 else:
     year = int(year)
 
-
-#opening the data
-
-
-
-# regex list 
-regex_host = r'(?i)the\shosts'
-regex_award  = r'(?i)award for'
-regex_presenter = r'(?i)presenter'
-regex_nominee = r'(?i)nominee for'
-regex_winner = r'(?i)winner|won'
-regex_remove = r'^RT\s|\sRT|(?i)goldenglobes|(?i)golden\sglobes'
-regex_best = r'(?i)best'
-regex_goes_to = r'(?i)goes\sto'
-regex_should = r'(?i)should\shave\swon|should\'ve\swon'
-regex_funniest = r'(?i)funniest|funny|hilarious'
-regex_deserve = r'(?i)deserve'
-regex_dressed = r'(?i)best\sdressed|beautiful|handsome|sexy|stunning|pretty|hot|looking\sgood'
-regex_name = r'[A-Z][a-z]+\s[A-Z][a-z]+'
-
-regex_award_exact = r'(?i)best\sperformances\sby\san\sactor\sin\sa\ssupporting\srole\sin\sa\smotion\spicture'
-
-
-# host = getNames(getDistribution(dataSearch(regex_host)))
+additional_goals(c.regex_dressed, c.regex_worst_dressed, c.regex_name, c.regex_funniest, c.regex_deserve)
 
 
 
 
-# awards = getAwards(getDistribution(dataSearch(regex_award)))
+
+# awards = getAwards(getDistribution(dataSearch(c.regex_award)))
 
 
-# potential_winner_list, award_numbers = dataSearchAward(regex_winner, awards.keys())
+# potential_winner_list, award_numbers = dataSearchAward(c.regex_winner, awards.keys())
 # potential_winners = getNames(getDistribution(potential_winner_list), awards.keys())
 # real_awards = award_numbers.keys()
 
 
 
 
+#print_human_readable(c.regex_host, c.regex_dressed, c.regex_worst_dressed, c.regex_name)
 
 
-# print()
-# print()
-# print(host)
-# print()
-# print()
 # print(real_awards)
 # print()
 # print()
@@ -66,24 +40,6 @@ regex_award_exact = r'(?i)best\sperformances\sby\san\sactor\sin\sa\ssupporting\s
 
 
 #print_helper(dataSearch2(regex_best,regex_goes_to))
-
-# # This outputs best dressed:
-# thing = dataSearch2(regex_dressed, regex_name)
-# output = {}
-# for i in thing:
-#     tweet = i[1]
-#     name = re.findall(regex_name, tweet)
-#     for n in name:
-#         if n in output:
-#             output[n] += 1
-#         else:
-#             output[n] = 1
-# output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:9])
-# print(output2[:5])
-
-
-
-
 
 
 
