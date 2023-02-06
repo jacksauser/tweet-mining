@@ -379,11 +379,12 @@ def presenterGetter(allawards):
     awardUseful = {}
     output = {}
     awardPresenters = {}
-    stopword = ['best','-','in','a','role','golden','globes','globe']
+    stopword = ['best','-','in','a','role','golden','globes','globe','or','by','an','for','made']
+    alreadyPresented = []
         
     for i in dat:
         ls = [w for w in i.split() if not w in stopword]
-        regex = ".*(?=.*{}).*".format(")(?=.*".join(ls))
+        regex = re.compile("|".join(ls))
         awardUseful[i] = regex
 
     for i in dat:
@@ -397,8 +398,21 @@ def presenterGetter(allawards):
                     output[n] += 1
                 else:
                     output[n] = 1
-        output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:10])
-        final = output2[:2]
+        output2 = sorted(output, key = output.get, reverse = True)[:50]
+        final = []
+        ind = 0
+        for k in output2:
+            if ind >= 2:
+                break
+            if k in alreadyPresented:
+                continue
+            final.append(k)
+            alreadyPresented.append(k)
+            ind += 1
         awardPresenters[i] = final
         print(final)
     return awardPresenters
+
+OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+out = presenterGetter(OFFICIAL_AWARDS_1315)
+print(out)
