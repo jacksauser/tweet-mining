@@ -32,8 +32,8 @@ import awardshow
 #host_outliers = get_outliers(host)
 # print(host_outliers.keys())
 
-def getHost():
-    return host_outliers.keys()
+# def getHost():
+#     return host_outliers.keys()
 
 #print_human_readable(c.regex_host, c.regex_dressed, c.regex_worst_dressed, c.regex_name)
 
