@@ -31,9 +31,9 @@ import constants as c
 
 
 # Gets the outliers of the hosts
-host = getNames(getDistribution(dataSearch(c.regex_host)))
-host_outliers = get_outliers(host)
-print(host_outliers)
+# host = getNames(getDistribution(dataSearch(c.regex_host)))
+# host_outliers = get_outliers(host)
+# print(host_outliers)
 
 def getHost():
     host = getNames(getDistribution(dataSearch(c.regex_host)))
@@ -71,63 +71,7 @@ def getHost():
 # print(sorted(output_top.items(), key=lambda item: item[1], reverse=True))
 
 
-# award_category = ['Best Motion Picture(.*)Drama',
-# 'Best Actress(.*)Motion Picture(.*)Drama',
-# 'Best Actor(.*)Motion Picture(.*)Musical(.*)Comedy',
-# 'Best Animated Feature Film',
-# 'Best Performance(.*)Actress(.*)(TV|Television) Series(.*)Drama',
-# 'Best Performance(.*)Actress(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
-# 'Best Performance(.*)Actor(.*)(TV|Television) Series(.*)Drama',
-# 'Best Actor(.*)Motion Picture(.*)Drama',
-# 'Best Director(.*)Motion Picture',
-# 'Cecil B. DeMille Award',
-# 'Best Supporting Actor(.*)Motion Picture',
-# 'Best Mini[\s-]*series(.*)(TV|Television) Film',
-# 'Best Supporting Actor(.*)Series(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
-# 'Best Performance(.*)Actor(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
-# 'Best Motion Picture(.*)Musical(.*)Comedy',
-# 'Best Actress(.*)Motion Picture(.*)Musical(.*)Comedy',
-# 'Best Screenplay(.*)Motion Picture',
-# 'Best Original Score',
-# 'Best Performance(.*)Actress(.*)(TV|Television) Series(.*)Musical(.*)Comedy',
-# 'Best Supporting Actress(.*)Series(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
-# 'Best (TV|Television) Series(.*)Drama',
-# 'Best Supporting Actress(.*)Motion Picture',
-# 'Best Original Song',
-# 'Best Foreign Language Film',
-# 'Best (TV|Television) Series(.*)Musical(.*)Comedy',
-# 'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy']
 
-# award_category = [r'\bbest\b(?=.*\bmotion\b)(?=.*\bpicture\b)(?=.*\bdrama\b)',
-# r'\bactress\b(?=.*\bmotion\spicture\b)(?=.*\bdrama\b)',
-# r'\bactor\b(?=.*\bmotion\spicture\b)(?=.*\bmusical\b)(?=.*\bcomedy\b)'
-# ]
-# 'Best Actor(.*)Motion Picture(.*)Musical(.*)Comedy',
-# 'Best Animated Feature Film',
-# 'Best Performance(.*)Actress(.*)(TV|Television) Series(.*)Drama',
-# 'Best Performance(.*)Actress(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
-# 'Best Performance(.*)Actor(.*)(TV|Television) Series(.*)Drama',
-# 'Best Actor(.*)Motion Picture(.*)Drama',
-# 'Best Director(.*)Motion Picture',
-# 'Cecil B. DeMille Award',
-# 'Best Supporting Actor(.*)Motion Picture',
-# 'Best Mini[\s-]*series(.*)(TV|Television) Film',
-# 'Best Supporting Actor(.*)Series(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
-# 'Best Performance(.*)Actor(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
-# 'Best Motion Picture(.*)Musical(.*)Comedy',
-# 'Best Actress(.*)Motion Picture(.*)Musical(.*)Comedy',
-# 'Best Screenplay(.*)Motion Picture',
-# 'Best Original Score',
-# 'Best Performance(.*)Actress(.*)(TV|Television) Series(.*)Musical(.*)Comedy',
-# 'Best Supporting Actress(.*)Series(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
-# 'Best (TV|Television) Series(.*)Drama',
-# 'Best Supporting Actress(.*)Motion Picture',
-# 'Best Original Song',
-# 'Best Foreign Language Film',
-# 'Best (TV|Television) Series(.*)Musical(.*)Comedy',
-# 'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy']
-
-#pattern = re.compile(r"\bactress\b(?=.*\bmotion\spicture\b)(?=.*\bdrama\b)")
         
 
 
@@ -172,3 +116,53 @@ def getHost():
 #             output2 = sorted(output, key = output.get, reverse = True)[:20]
 #     #output2 = sorted(output, key = output.get, reverse = True)[:20]
 #     print(output2[:5])
+
+
+l = dataSearch2(c.regex_best,c.regex_goes_to)
+# print_helper(l)
+
+
+l2 = []
+for i in l:
+    l2.append(re.split(c.regex_goes_to,i[1]))
+
+# print(l2)
+d1 = {}
+l3 = []
+l4 = []
+for i in l2:
+    a = i[0]
+    # print(a)
+    if a.startswith("best") or a.startswith("Best"):
+        # print(a)
+        if a in d1:
+            l3.append(a)
+            d1[a].append(i[1])
+            l4.append(i[1])
+        else:
+            l3.append(a)
+            d1[a] = [i[1]]
+            l4.append(i[1])
+
+print(d1.keys())
+# print()
+# print()
+# print(getDistribution(l3))
+# print()
+# print()
+# print(nameGrabber(l4))
+# print()
+# print()
+
+# d2 = {}
+# for key in d1:
+#     d2[key] = nameGrabber(d1[key])
+#     print(key)
+#     print(nameGrabber(d1[key]))
+#     print(d1[key])
+#     print()
+#     print()
+
+# print()
+# print()
+# print(d2)
