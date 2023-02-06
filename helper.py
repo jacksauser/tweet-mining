@@ -59,8 +59,8 @@ def dataSearch2(regex1, regex2):
             t = re.sub(regex_remove_gg, '', t)
             nltk_output = pos_tag(word_tokenize(t))
             # print(nltk_output)
-            l.append([nltk_output,re.split(regex2,t)]) #!!!Needed for awards and winners
-            # l.append([nltk_output,t])
+            # l.append([nltk_output,re.split(regex2,t)]) #!!!Needed for awards and winners
+            l.append([nltk_output,t])
             # printTweet(t)
             # for line in nltk_output:                
                 # if type(line) == Tree:
@@ -159,11 +159,12 @@ def getDistribution(l, regex = ".*"):
                 else:
                     dict_[s] = 1
         else:
-            if re.search(regex, i):
-                if i in dict_:
-                    dict_[i] += 1
-                else:
-                    dict_[i] = 1
+            if i != None:
+                if re.search(regex, i):
+                    if i in dict_:
+                        dict_[i] += 1
+                    else:
+                        dict_[i] = 1
     ret = dict(sorted(dict_.items(), key=lambda item: item[1], reverse=True))
     return ret
 
