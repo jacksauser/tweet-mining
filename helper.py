@@ -71,6 +71,29 @@ def dataSearch2(regex1, regex2):
                 #     l.append(re.sub(r'\s+$','',name))
     return l
 
+def dataSearchNotSplit(regex1, regex2):
+    l = []
+
+    for i in data:
+        t = i['text']
+        u = i['user']
+        if re.search(regex1, t) and re.search(regex2, t) and u['screen_name'] != 'goldenglobes':
+            t = re.sub(regex_remove_rt, '', t)
+            t = re.sub(regex_remove_link, '', t)
+            t = re.sub(regex_remove_gg, '', t)
+            nltk_output = pos_tag(word_tokenize(t))
+            # print(nltk_output)
+            #l.append([nltk_output,re.split(regex2,t)]) #!!!Needed for awards and winners
+            l.append([nltk_output,t])
+            # printTweet(t)
+            # for line in nltk_output:                
+                # if type(line) == Tree:
+                #     name = ''
+                #     for nltk_result_leaf in line.leaves():
+                #         name += nltk_result_leaf[0] + ' '
+                #     l.append(re.sub(r'\s+$','',name))
+    return l
+
 
 all_names = []
 
@@ -219,6 +242,7 @@ def print_helper(l):
 
 def get_outliers(d):
     values = list(d.values())
+    if len(values) == 0: return []
     mean_value = sum(values) / len(values)
     return [key for (key, value) in d.items() if value > mean_value]
 
@@ -254,7 +278,7 @@ def print_award(award):
 
 
 def additional_goals(regex_dressed, regex_worst_dressed, regex_name, regex_funniest, regex_deserve):
-    thing = dataSearch2(regex_dressed, regex_name)
+    thing = dataSearchNotSplit(regex_dressed, regex_name)
     output = {}
     for i in thing:
         tweet = i[1]
@@ -268,7 +292,7 @@ def additional_goals(regex_dressed, regex_worst_dressed, regex_name, regex_funni
     best_dressed = output2[:5]
     print('Best Dressed: ' + ', '.join(str(x) for x in best_dressed))
 
-    thing = dataSearch2(regex_worst_dressed, regex_name)
+    thing = dataSearchNotSplit(regex_worst_dressed, regex_name)
     output3 = {}
     for i in thing:
         tweet = i[1]
@@ -285,8 +309,13 @@ def additional_goals(regex_dressed, regex_worst_dressed, regex_name, regex_funni
     output5 = {}
     sum1 = sum(output.values())
     sum3 = sum(output3.values())
-    best_ratio = sum1/(sum1 + sum3)
-    worst_ratio = sum3/(sum1 + sum3)
+    total = sum1 + sum3
+    if total > 0:
+        best_ratio = sum1/(sum1 + sum3)
+        worst_ratio = sum3/(sum1 + sum3)
+    else:
+        best_ratio = 1
+        worst_ratio = 1
     for name in output:
         if name in output5:
             output5[name] += output[name]*worst_ratio
@@ -301,7 +330,7 @@ def additional_goals(regex_dressed, regex_worst_dressed, regex_name, regex_funni
     most_controversially_dressed = output6[:5]
     print('Most Controversially Dressed: ' + ', '.join(str(x) for x in most_controversially_dressed))
 
-    thing = dataSearch2(regex_funniest, regex_name)
+    thing = dataSearchNotSplit(regex_funniest, regex_name)
     output = {}
     for i in thing:
         tweet = i[1]
@@ -317,7 +346,7 @@ def additional_goals(regex_dressed, regex_worst_dressed, regex_name, regex_funni
     funniest = output2[:5]
     print('Funniest Jokes: ' + ', '.join(str(x) for x in funniest))
 
-    thing = dataSearch2(regex_deserve, regex_name)
+    thing = dataSearchNotSplit(regex_deserve, regex_name)
     output = {}
     for i in thing:
         tweet = i[1]
