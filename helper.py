@@ -387,7 +387,7 @@ def nomineeGetter(allawards, winners):
     for i in dat:
         #if awardtype[i].equals('Person'):
         regex_curr = awardUseful[i]
-        print(regex_curr)
+        #print(regex_curr)
         tw = dataSearch2(regex_curr, regex_curr)
         for j in tw:
             tweet = str(j)
@@ -404,7 +404,7 @@ def nomineeGetter(allawards, winners):
             output2 = movieFilter(sorted(output, key = output.get, reverse = True)[:20])
         final = output2[:4]
         awardNoms[i] = final
-        print(final)
+        #print(final)
     return awardNoms
         
         
