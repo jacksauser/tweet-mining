@@ -360,7 +360,7 @@ def additional_goals(regex_dressed, regex_worst_dressed, regex_name, regex_funni
                 output[n] = 1
     output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:9])
     most_snubbed = output2[:5]
-    print('Most Snubbed: ' + ', '.join(str(x) for x in most_snubbed))
+    print('Snubs and Surprises: ' + ', '.join(str(x) for x in most_snubbed))
     print()
     print()
 
