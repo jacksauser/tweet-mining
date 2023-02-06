@@ -33,7 +33,7 @@ regex_name = r'[A-Z][a-z]+\s[A-Z][a-z]+'
 checker = Checker.checker('Golden Globes', 2013)
 
 known_actors = []
-known_movies = []
+known_movies = {}
 def searchForActor(s):
     for a in known_actors:
         if a in s:
@@ -66,8 +66,11 @@ def searchForActorAgain(s):
             return name
     
 
-def searchForMovie(s):
-    for a in known_movies:
+def searchForMovie(key, s):
+    if key not in known_movies:
+        known_movies[key] = []
+
+    for a in known_movies[key]:
         if a in s:
             return a
     maybe_titles = []
@@ -84,7 +87,7 @@ def searchForMovie(s):
         movie = checker.isMovie(n)
         if movie and movie != -1 and n != None:
             if n == movie.get('title'):
-                known_movies.append(n)
+                known_movies[key].append(n)
                 return n
             else:
                 m = movie.get('title')
@@ -93,7 +96,7 @@ def searchForMovie(s):
         
         for m in potential:
             if m in s:
-                known_movies.append(n)
+                known_movies[key].append(n)
                 return n
 
     nltk = ne_chunk(pos_tag(nltk_output))
@@ -107,7 +110,7 @@ def searchForMovie(s):
     for n in maybe_titles:
         movie = checker.isMovie(n)
         if movie and movie != -1 and n != None:
-            known_movies.append(movie.get('title'))
+            known_movies[key].append(movie.get('title'))
             return movie.get('title')
 
 
@@ -125,33 +128,39 @@ def searchForMovie(s):
         print()
         if movie and movie != -1 and n != None:
             if n == movie:
-                known_movies.append(n)
+                known_movies[key].append(n)
                 return n
     return -1
 
+def getWinners(l):
+    mapping = {}
+    for award in list_of_awards:
+        for text in l:
+            match = re.search(award, text, re.IGNORECASE)
+            if match:
+                mapping[award] = text
+    output = {}
+    for award in list_of_awards:
+        output[award] = dataSearch2(award, ".*")#r"goes\sto|winner|recipent")
 
-output = {}
-for award in list_of_awards:
-    output[award] = dataSearch2(award, ".*")#r"goes\sto|winner|recipent")
-
-result = {}
-for key in output:
-    print(key)
-    names = []
-    for line in output[key]:
-        text = re.sub(key,'',line[1])
-        if re.search(r"(?i)Actor", key) or re.search(r"(?i)Actress", key) or re.search(r"(?i)Director", key) or re.search(r"(?i)DeMille", key):
-            r = searchForActor(text)
-            if r != -1:
-                names.append(r)
+    result = {}
+    for key in output:
+        print(key)
+        names = []
+        for line in output[key]:
+            text = re.sub(key,'',line[1])
+            if re.search(r"(?i)Actor", key) or re.search(r"(?i)Actress", key) or re.search(r"(?i)Director", key) or re.search(r"(?i)DeMille", key):
+                r = searchForActor(text)
+                if r != -1:
+                    names.append(r)
+            else:
+                r = searchForMovie(key, text)
+                if r != -1:
+                    names.append(r)
+        # print(names)
+        if len(names) > 0:
+            result[mapping[key]] = next(iter(getDistribution(names)))
         else:
-            r = searchForMovie(text)
-            if r != -1:
-                names.append(r)
-    # print(names)
-    if len(names) > 0:
-        result[key] = next(iter(getDistribution(names)))
-    else:
-        result[key] = "ERROR"
-
-print(result)
+            result[mapping[key]] = "No winner found"
+    return result
+# print(result)

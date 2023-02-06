@@ -182,8 +182,9 @@ def isFullName(s, l = []):
     # if human_name.first and human_name.last:
 
     name = s.split(" -- ")[0]
-    if (re.search("\w+\s+\w+\s$",name) or re.search("\w+\s+\w$",name)) and name not in l:
-        # print(s)
+    
+    if re.search(r"\w+\s+\w",name):
+        
         return True
     else:
         return False
