@@ -46,7 +46,7 @@ def get_winner(year):
 
     return getWinners(dat)
 
-def get_presenters(year):
+def get_presenters(year, winners, nominees):
     '''Presenters is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
