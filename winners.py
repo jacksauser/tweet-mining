@@ -29,6 +29,34 @@ list_of_awards = ['Best Motion Picture(.*)Drama',
                   'Best (TV|Television) Series(.*)Musical(.*)Comedy',
                   'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy']
 
+map_of_awards = {
+    'Best Motion Picture(.*)Drama' : 'best motion picture - drama',
+    'Best Actress(.*)Motion Picture(.*)Drama' : 'best performance by an actress in a motion picture - drama',
+    'Best Actor(.*)Motion Picture(.*)Musical(.*)Comedy':'best performance by an actor in a motion picture - comedy or musical',
+    'Best Animated Feature Film':'best animated feature film',
+    'Best Performance(.*)Actress(.*)(TV|Television) Series(.*)Drama':'best performance by an actress in a television series - drama',
+    'Best Performance(.*)Actress(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)':'best performance by an actress in a mini-series or motion picture made for television',
+    'Best Performance(.*)Actor(.*)(TV|Television) Series(.*)Drama':'best performance by an actor in a television series - drama',
+    'Best Actor(.*)Motion Picture(.*)Drama':'best performance by an actor in a motion picture - drama',
+    'Best Director(.*)Motion Picture':'best director - motion picture',
+    'Cecil B. DeMille Award' : 'cecil b. demille award',
+    'Best Supporting Actor(.*)Motion Picture':'best performance by an actor in a supporting role in a motion picture',
+    'Best Mini[\s-]*series(.*)(TV|Television) Film':'best mini-series or motion picture made for television',
+    'Best Supporting Actor(.*)Series(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)':'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television',
+    'Best Performance(.*)Actor(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)':'best performance by an actor in a mini-series or motion picture made for television',
+    'Best Motion Picture(.*)Musical(.*)Comedy':'best motion picture - comedy or musical',
+    'Best Actress(.*)Motion Picture(.*)Musical(.*)Comedy':'best performance by an actress in a motion picture - comedy or musical',
+    'Best Screenplay(.*)Motion Picture':'best screenplay - motion picture',
+    'Best Original Score':'best original score - motion picture',
+    'Best Performance(.*)Actress(.*)(TV|Television) Series(.*)Musical(.*)Comedy':'best performance by an actress in a television series - comedy or musical',
+    'Best Supporting Actress(.*)Series(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)':'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television',
+    'Best (TV|Television) Series(.*)Drama':'best television series - drama',
+    'Best Supporting Actress(.*)Motion Picture':'best performance by an actress in a supporting role in a motion picture',
+    'Best Original Song':'best original song - motion picture',
+    'Best Foreign Language Film':'best foreign language film',
+    'Best (TV|Television) Series(.*)Musical(.*)Comedy':'best television series - comedy or musical',
+    'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy':'best performance by an actor in a television series - comedy or musical'
+}
 regex_name = r'[A-Z][a-z]+\s[A-Z][a-z]+'
 checker = Checker.checker('Golden Globes', 2013)
 
@@ -121,11 +149,11 @@ def searchForMovie(key, s):
     for i in range(len(nnps)):
         n = nnps[i]
         movie = checker.isMovie(n)
-        print()
-        print(movie)
-        print(n)
-        print(n == movie.get('title'))
-        print()
+        # print()
+        # print(movie)
+        # print(n)
+        # print(n == movie.get('title'))
+        # print()
         if movie and movie != -1 and n != None:
             if n == movie:
                 known_movies[key].append(n)
@@ -133,19 +161,13 @@ def searchForMovie(key, s):
     return -1
 
 def getWinners(l):
-    mapping = {}
-    for award in list_of_awards:
-        for text in l:
-            match = re.search(award, text, re.IGNORECASE)
-            if match:
-                mapping[award] = text
     output = {}
     for award in list_of_awards:
         output[award] = dataSearch2(award, ".*")#r"goes\sto|winner|recipent")
 
     result = {}
     for key in output:
-        print(key)
+        # print(key)
         names = []
         for line in output[key]:
             text = re.sub(key,'',line[1])
@@ -159,8 +181,8 @@ def getWinners(l):
                     names.append(r)
         # print(names)
         if len(names) > 0:
-            result[mapping[key]] = next(iter(getDistribution(names)))
+            result[map_of_awards[key]] = next(iter(getDistribution(names)))
         else:
-            result[mapping[key]] = "No winner found"
+            result[map_of_awards[key]] = "No winner found"
     return result
 # print(result)
