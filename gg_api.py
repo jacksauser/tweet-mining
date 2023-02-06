@@ -21,7 +21,7 @@ def get_awards(year):
     awards = []
     return findAwards()
 
-def get_nominees(year):
+def get_nominees(year, winners):
     '''Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
@@ -31,7 +31,7 @@ def get_nominees(year):
     else:
         dat = OFFICIAL_AWARDS_1315
     
-    nominees = nomineeGetter(dat)
+    nominees = nomineeGetter(dat, winners)
     
     return nominees
 
@@ -77,9 +77,9 @@ def main():
     what it returns.'''
     hosts = get_hosts(2013)
     awards = get_awards(2013)
-    nominees = get_nominees(2013)
     winners = get_winner(2013)
-    presenters = get_presenters(2013)
+    nominees = get_nominees(2013, winners)
+    presenters = get_presenters(2013, winners, nominees)
 
     gg = awardshow.AwardShow('Golden Globes', 2013)
     for i in hosts:
