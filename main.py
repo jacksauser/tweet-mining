@@ -20,6 +20,7 @@ import constants as c
 
 
 
+#host = getNames(getDistribution(dataSearch(c.regex_host)))
 
 # awards = getAwards(getDistribution(dataSearch(c.regex_award)))
 
@@ -127,33 +128,6 @@ def getHost():
 # 'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy']
 
 #pattern = re.compile(r"\bactress\b(?=.*\bmotion\spicture\b)(?=.*\bdrama\b)")
-# dat = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
-# awardtype = {}
-# awardUseful = {}
-# output = {}
-# for i in dat:
-#     if 'actor' in i or 'actress' in i or 'director' in i or 'cecil' in i:
-#         awardtype[i] = 'Person'
-#     else:
-#         awardtype[i] = 'Film'
-    
-# for i in dat:
-#     awardUseful[i] = [w for w in i.split()]
-
-# for i in dat:
-#     #if awardtype[i].equals('Person'):
-#     regex_curr = re.compile(i)
-#     tw = dataSearch2(regex_curr, regex_curr)
-#     for j in tw:
-#         tweet = str(j)
-#         names = re.findall(regex_name, tweet)
-#         for n in names:
-#             if n in output:
-#                 output[n] += 1
-#             else:
-#                 output[n] = 1
-#     output2 = sorted(output, key = output.get, reverse = True)[:20]
-#     print(output2)
         
 
 

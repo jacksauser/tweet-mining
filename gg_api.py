@@ -22,27 +22,15 @@ def get_nominees(year):
     '''Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
-    awardtype = {}
-    awardUseful = {}
+
     if year == 2015:
         dat = OFFICIAL_AWARDS_1819
     else:
         dat = OFFICIAL_AWARDS_1315
-    for i in dat:
-        if 'actor' in i or 'actress' in i or 'director' in i or 'cecil' in i:
-            awardtype[i] = 'Person'
-        else:
-            awardtype[i] = 'Film'
     
-    for i in dat:
-        awardUseful[i] = [w for w in i.split()]
-
-    for i in dat:
-        if awardtype[i].equals('Person'):
-            
+    nominees = nomineeGetter(dat)
     
-
-    #return nominees
+    return nominees
 
 def get_winner(year):
     '''Winners is a dictionary with the hard coded award

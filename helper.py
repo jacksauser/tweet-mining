@@ -334,3 +334,43 @@ def additional_goals(regex_dressed, regex_worst_dressed, regex_name, regex_funni
     print('Most Snubbed: ' + ', '.join(str(x) for x in most_snubbed))
     print()
     print()
+
+def nomineeGetter(allawards):
+    dat = allawards
+    awardtype = {}
+    awardUseful = {}
+    output = {}
+    awardNoms = {}
+    stopword = ['best','-','in','a','role','golden','globes','globe']
+    for i in dat:
+        if 'actor' in i or 'actress' in i or 'director' in i or 'cecil' in i:
+            awardtype[i] = 'Person'
+        else:
+            awardtype[i] = 'Film'
+        
+    for i in dat:
+        ls = [w for w in i.split() if not w in stopword]
+        #half = len(ls) // 2 + len(ls) % 2
+        regex = ".*(?=.*{}).*".format(")(?=.*".join(ls))
+        #regex = re.compile("&".join(ls))
+        awardUseful[i] = regex
+
+    for i in dat:
+        #if awardtype[i].equals('Person'):
+        regex_curr = awardUseful[i]
+        
+        tw = dataSearch2(regex_curr, regex_curr)
+        for j in tw:
+            tweet = str(j)
+            names = re.findall(c.regex_name, tweet)
+            for n in names:
+                if n in output:
+                    output[n] += 1
+                else:
+                    output[n] = 1
+        output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:20])
+        final = output2[:6]
+        awardNoms[i] = final
+    return awardNoms
+        
+        
