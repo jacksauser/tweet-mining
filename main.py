@@ -1,5 +1,6 @@
 from helper import *
 import awardshow
+import constants as c
 
 # collecting the award show queried and year
 # award_show = input("What award show? ")
@@ -14,7 +15,8 @@ import awardshow
 # else:
 #     year = int(year)
 
-#additional_goals(c.regex_dressed, c.regex_worst_dressed, c.regex_name, c.regex_funniest, c.regex_deserve)
+# additional_goals(c.regex_dressed, c.regex_worst_dressed, c.regex_name, c.regex_funniest, c.regex_deserve)
+
 
 
 
@@ -29,11 +31,14 @@ import awardshow
 
 
 # Gets the outliers of the hosts
-#host_outliers = get_outliers(host)
-# print(host_outliers.keys())
+host = getNames(getDistribution(dataSearch(c.regex_host)))
+host_outliers = get_outliers(host)
+print(host_outliers)
 
-# def getHost():
-#     return host_outliers.keys()
+def getHost():
+    host = getNames(getDistribution(dataSearch(c.regex_host)))
+    host_outliers = get_outliers(host)  
+    return host_outliers
 
 #print_human_readable(c.regex_host, c.regex_dressed, c.regex_worst_dressed, c.regex_name)
 
@@ -123,7 +128,6 @@ import awardshow
 # 'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy']
 
 #pattern = re.compile(r"\bactress\b(?=.*\bmotion\spicture\b)(?=.*\bdrama\b)")
-
         
 
 
