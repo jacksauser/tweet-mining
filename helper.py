@@ -59,8 +59,8 @@ def dataSearch2(regex1, regex2):
             t = re.sub(regex_remove_gg, '', t)
             nltk_output = pos_tag(word_tokenize(t))
             # print(nltk_output)
-            # l.append([nltk_output,re.split(regex2,t)])
-            l.append([nltk_output,t])
+            l.append([nltk_output,re.split(regex2,t)]) #!!!Needed for awards and winners
+            # l.append([nltk_output,t])
             # printTweet(t)
             # for line in nltk_output:                
                 # if type(line) == Tree:
@@ -69,6 +69,48 @@ def dataSearch2(regex1, regex2):
                 #         name += nltk_result_leaf[0] + ' '
                 #     l.append(re.sub(r'\s+$','',name))
     return l
+
+
+all_names = []
+
+def nameGrabber(l):
+    names = []
+    for t in l:
+        if t in all_names:
+           names.append(t)
+           continue 
+        nltk_output = pos_tag(word_tokenize(t))
+        # print(nltk_output)
+        if len(nltk_output) == 2 and (nltk_output[0][1] =='NNP' and nltk_output[1][1] =='NNP'):
+            names.append(t)
+            all_names.append(t)
+            continue 
+        in_all_names = False
+        for n in all_names:
+            if n in t:
+                names.append(n)
+                in_all_names = True
+                break
+        if in_all_names:
+            continue
+
+        name = ""
+        for line in nltk_output:
+            
+            startName = False
+            onlyoneNNP = False
+            if line[1] == 'NNP':
+                # print(line[1],"yooooooooooooooooooo")
+                startName = True
+                name += line[0]
+            if line[1] != 'NNP' and name != "":
+                # print("this hits")
+                names.append(name)
+                all_names.append(name)
+                break
+
+                    
+    return names
 
 
 
@@ -138,7 +180,7 @@ def isFullName(s, l = []):
     # if human_name.first and human_name.last:
 
     name = s.split(" -- ")[0]
-    if re.search("\w+\s+\w+",name) and name not in l:
+    if (re.search("\w+\s+\w+\s$",name) or re.search("\w+\s+\w$",name)) and name not in l:
         # print(s)
         return True
     else:

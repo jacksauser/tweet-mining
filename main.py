@@ -81,12 +81,71 @@ regex_award_exact = r'(?i)best\sperformances\sby\san\sactor\sin\sa\ssupporting\s
 # output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:9])
 # print(output2[:5])
 
+l = dataSearch2(regex_best,regex_goes_to)
+# print_helper(l)
+
+
+l2 = []
+for i in l:
+    l2.append(i[1])
+
+d1 = {}
+l3 = []
+l4 = []
+for i in l2:
+    a = i[0]
+    # print(a)
+    if a.startswith("best") or a.startswith("Best"):
+        # print(a)
+        if a in d1:
+            l3.append(a)
+            d1[a].append(i[1])
+            l4.append(i[1])
+        else:
+            l3.append(a)
+            d1[a] = [i[1]]
+            l4.append(i[1])
+
+print(d1)
+print()
+print()
+print(getDistribution(l3))
+print()
+print()
+print(nameGrabber(l4))
+print()
+print()
+
+d2 = {}
+for key in d1:
+    d2[key] = nameGrabber(d1[key])
+#     print(key)
+#     print(nameGrabber(d1[key]))
+#     print(d1[key])
+#     print()
+#     print()
+
+# print()
+# print()
+# print(d2.keys())
 
 
 
+def voter(l,person=False):
+    if person:
+        return getDistribution(l,regex_name)
+    else:
+        return getDistribution(l)
 
+d3 = {}
+for key in d2:
+    d3[key] = voter(d2[key])
 
-
+# print()
+# print()
+# print(d3)
+# print()
+# print()
 
 
 
@@ -95,15 +154,87 @@ regex_award_exact = r'(?i)best\sperformances\sby\san\sactor\sin\sa\ssupporting\s
 # print(output_top10)
 
 
-# output_top = dict(sorted(host_dict.items(), key=lambda item: item[1], reverse=True))
+# output_top = d3
 
-# for i in host_names_potential:
+# for i in d3.keys():
 #     for j in output_top:
 #         if i in j:
-#             output_top[j] += 1
+#             if isinstance(output_top[j],dict):
+#                 output_top[j] = 1
+#             else:
+#                 output_top[j] += 1
 
 # print(sorted(output_top.items(), key=lambda item: item[1], reverse=True))
 
+def common_member(a, b):
+    a_set = set(a)
+    b_set = set(b)
+ 
+    if (a_set & b_set):
+        return(list(a_set & b_set))
+    else:
+        return([])
 
 
+d4 = {}
+for key in d3:
+    d4[key] = key.split(' ')
 
+d5 = {}
+award_atlas = {}
+for key in d4:
+        for key2 in d4:
+            if key in award_atlas and award_atlas[key] == key2 and key != key2:
+                if key2 in d5:
+                    d5[key2] += 3
+                else:
+                    d5[key2] = 3
+            elif len(common_member(d4[key],d4[key2])) >= 4 and key != key2: # if they have more than 4 of the same words
+                a = ((len(common_member(d4[key],d4[key2])) - 3) / 4) - .25
+                longer_key = key2 if len(d4[key2]) > len(d4[key]) else key
+                shorter_key = key if len(d4[key2]) > len(d4[key]) else key2
+                if len(common_member(d4[key],d4[key2])) / len(d4[longer_key]) > .8 and longer_key == key2:
+                    if shorter_key not in award_atlas:
+                        award_atlas[shorter_key] = longer_key
+                        if shorter_key in d5 and longer_key in d5:
+                            d5[longer_key] += d5[shorter_key]
+                        elif shorter_key in d5:
+                            d5[longer_key] = d5[shorter_key]
+                        elif longer_key in d5:
+                            d5[longer_key] += 3
+                        else:
+                            d5[longer_key] = 3
+                    else:
+                        if shorter_key in d5 and longer_key in d5:
+                            d5[longer_key] += d5[shorter_key]
+                        elif shorter_key in d5:
+                            d5[longer_key] = d5[shorter_key]
+                        elif longer_key in d5:
+                            d5[longer_key] += 3
+                        else:
+                            d5[longer_key] = 3
+                else:
+                    if key2 in d5:
+                        d5[key2] += 1 + a
+                    else:
+                        d5[key2] = 1 +  a
+
+                
+
+
+print()
+print()
+# print(sorted(d5.items(), key=lambda item: item[1], reverse=True))
+print()
+print()
+print(award_atlas)
+
+d6 = d5
+for key in award_atlas:
+    award = award_atlas[key]
+    if award != key:
+        d6[award] += d6[key]
+        d6.pop(key)
+
+print(d6)
+        
