@@ -226,5 +226,5 @@ def actorFilter(d):
     return vals
 
 def movieFilter(d):
-    vals = {key:value for (key, value) in d.items() if checker.checkMovie(key)}
+    vals = [value for value in d if checker.checkMovie(value)]
     return vals
