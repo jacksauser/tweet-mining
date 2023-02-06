@@ -1,0 +1,17 @@
+# regex list 
+regex_host = r'(?i)the\shosts'
+regex_award  = r'(?i)award for'
+regex_presenter = r'(?i)presenter'
+regex_nominee = r'(?i)nominee for'
+regex_winner = r'(?i)winner|won'
+regex_remove = r'^RT\s|\sRT|(?i)goldenglobes|(?i)golden\sglobes'
+regex_best = r'(?i)best'
+regex_goes_to = r'(?i)goes\sto'
+regex_should = r'(?i)should\shave\swon|should\'ve\swon'
+regex_funniest = r'(?i)funniest|funny|hilarious|good\sjokes|jokes'
+regex_deserve = r'(?i)deserve|should\shave\swon|should\'ve\swon'
+regex_dressed = r'(?i)best\sdressed|beautiful|handsome|sexy|stunning|pretty|hot|looking\sgood'
+regex_name = r'[A-Z][a-z]+\s[A-Z][a-z]+'
+regex_worst_dressed = r'(?i)worst\sdressed|ugly|gross|bad\slooking|bad\soutfit|disgusting|unappealing'
+
+regex_award_exact = r'(?i)best\sperformances\sby\san\sactor\sin\sa\ssupporting\srole\sin\sa\smotion\spicture'

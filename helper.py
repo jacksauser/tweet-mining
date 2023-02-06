@@ -5,6 +5,7 @@ import nltk
 import re
 import nameparser
 import Checker
+import constants as c
 
 
 
@@ -220,12 +221,115 @@ def print_helper(l):
 def get_outliers(d):
     values = list(d.values())
     mean_value = sum(values) / len(values)
-    return {key:value for (key, value) in d.items() if value > mean_value}
+    return [key for (key, value) in d.items() if value > mean_value]
 
 def actorFilter(d):
     vals = [value for value in d if checker.checkActor(value)]
     return vals
 
 def movieFilter(d):
-    vals = {key:value for (key, value) in d.items() if checker.checkMovie(key)}
+    vals = [value for value in d if checker.checkMovie(value)]
     return vals
+
+
+def print_hosts(hosts):
+    print()
+    print()
+    print('Host(s): ' + ', '.join(str(x) for x in hosts))
+    print()
+    print()
+
+
+def print_awards(awards):
+    for award in awards:
+        print_award(award)
+    
+
+def print_award(award):
+    print("Award: " + award.awardName)
+    print("Presenters: " + ', '.join(str(x) for x in award.presenters))
+    print("Nominees: " + ', '.join(str(x) for x in award.nominees))
+    print("Winner: " + award.winner)
+    print()
+    print()
+
+
+def additional_goals(regex_dressed, regex_worst_dressed, regex_name, regex_funniest, regex_deserve):
+    thing = dataSearch2(regex_dressed, regex_name)
+    output = {}
+    for i in thing:
+        tweet = i[1]
+        name = re.findall(regex_name, tweet)
+        for n in name:
+            if n in output:
+                output[n] += 1
+            else:
+                output[n] = 1
+    output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:9])
+    best_dressed = output2[:5]
+    print('Best Dressed: ' + ', '.join(str(x) for x in best_dressed))
+
+    thing = dataSearch2(regex_worst_dressed, regex_name)
+    output3 = {}
+    for i in thing:
+        tweet = i[1]
+        name = re.findall(regex_name, tweet)
+        for n in name:
+            if n in output3:
+                output3[n] += 1
+            else:
+                output3[n] = 1
+    output4 = actorFilter(sorted(output3, key = output3.get, reverse = True)[:9])
+    worst_dressed = output4[:5]
+    print('Worst Dressed: ' + ', '.join(str(x) for x in worst_dressed))
+
+    output5 = {}
+    sum1 = sum(output.values())
+    sum3 = sum(output3.values())
+    best_ratio = sum1/(sum1 + sum3)
+    worst_ratio = sum3/(sum1 + sum3)
+    for name in output:
+        if name in output5:
+            output5[name] += output[name]*worst_ratio
+        else:
+            output5[name] = output[name]*worst_ratio
+    for name in output3:
+        if name in output5:
+            output5[name] += output3[name]*best_ratio
+        else:
+            output5[name] = output3[name]*best_ratio
+    output6 = actorFilter(sorted(output5, key = output5.get, reverse = True)[:9])
+    most_controversially_dressed = output6[:5]
+    print('Most Controversially Dressed: ' + ', '.join(str(x) for x in most_controversially_dressed))
+
+    thing = dataSearch2(regex_funniest, regex_name)
+    output = {}
+    for i in thing:
+        tweet = i[1]
+        name = re.findall(regex_name, tweet)
+        for n in name:
+            if n in output:
+                output[n] += 1
+            else:
+                if "Golden" in n:
+                    continue
+                output[n] = 1
+    output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:9])
+    funniest = output2[:5]
+    print('Funniest Jokes: ' + ', '.join(str(x) for x in funniest))
+
+    thing = dataSearch2(regex_deserve, regex_name)
+    output = {}
+    for i in thing:
+        tweet = i[1]
+        name = re.findall(regex_name, tweet)
+        for n in name:
+            if n in output:
+                output[n] += 1
+            else:
+                output[n] = 1
+    output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:9])
+    most_snubbed = output2[:5]
+    print('Most Snubbed: ' + ', '.join(str(x) for x in most_snubbed))
+    print()
+    print()
