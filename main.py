@@ -117,34 +117,55 @@ def getHost():
 #     #output2 = sorted(output, key = output.get, reverse = True)[:20]
 #     print(output2[:5])
 
+def common_member(a, b):
+    a_set = set(a)
+    b_set = set(b)
+ 
+    if (a_set & b_set):
+        return(list(a_set & b_set))
+    else:
+        return([])
 
-l = dataSearch2(c.regex_best,c.regex_goes_to)
-# print_helper(l)
+def findAwards():   
+    l = dataSearch2(c.regex_best,c.regex_goes_to)
+    # print_helper(l)
 
 
-l2 = []
-for i in l:
-    l2.append(re.split(c.regex_goes_to,i[1]))
+    l2 = []
+    for i in l:
+        l2.append(re.split(c.regex_goes_to,i[1]))
 
-# print(l2)
-d1 = {}
-l3 = []
-l4 = []
-for i in l2:
-    a = i[0]
-    # print(a)
-    if a.startswith("best") or a.startswith("Best"):
+    # print(l2)
+    d1 = {}
+    l3 = []
+    l4 = []
+    for i in l2:
+        a = i[0]
         # print(a)
-        if a in d1:
-            l3.append(a)
-            d1[a].append(i[1])
-            l4.append(i[1])
-        else:
-            l3.append(a)
-            d1[a] = [i[1]]
-            l4.append(i[1])
+        if a.startswith("best") or a.startswith("Best"):
+            # print(a)
+            if a in d1:
+                l3.append(a)
+                d1[a].append(i[1])
+                l4.append(i[1])
+            else:
+                l3.append(a)
+                d1[a] = [i[1]]
+                l4.append(i[1])
 
-print(d1.keys())
+    awards = d1.keys()
+    ret = []
+    for a in awards:
+        split1 = a.split(' ')
+        removedWord = False
+        for r in ret:
+            split2 = r.split(' ')
+            common = common_member(split1,split2)
+            if len(common) == len(split1):
+                removedWord = True
+        if not removedWord:
+            ret.append(a)
+    return(ret)
 # print()
 # print()
 # print(getDistribution(l3))
