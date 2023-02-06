@@ -1,4 +1,6 @@
 '''Version 0.35'''
+from helper import *
+from main import *
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
 OFFICIAL_AWARDS_1819 = ['best motion picture - drama', 'best motion picture - musical or comedy', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best performance by an actress in a motion picture - musical or comedy', 'best performance by an actor in a motion picture - musical or comedy', 'best performance by an actress in a supporting role in any motion picture', 'best performance by an actor in a supporting role in any motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best motion picture - animated', 'best motion picture - foreign language', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best television series - musical or comedy', 'best television limited series or motion picture made for television', 'best performance by an actress in a limited series or a motion picture made for television', 'best performance by an actor in a limited series or a motion picture made for television', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best performance by an actress in a television series - musical or comedy', 'best performance by an actor in a television series - musical or comedy', 'best performance by an actress in a supporting role in a series, limited series or motion picture made for television', 'best performance by an actor in a supporting role in a series, limited series or motion picture made for television', 'cecil b. demille award']
@@ -6,7 +8,7 @@ OFFICIAL_AWARDS_1819 = ['best motion picture - drama', 'best motion picture - mu
 def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
-    # Your code here
+    hosts = getHost()
     return hosts
 
 def get_awards(year):
@@ -19,8 +21,27 @@ def get_nominees(year):
     '''Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
-    # Your code here
-    return nominees
+    awardtype = {}
+    awardUseful = {}
+    if year == 2015:
+        dat = OFFICIAL_AWARDS_1819
+    else:
+        dat = OFFICIAL_AWARDS_1315
+    for i in dat:
+        if 'actor' in i or 'actress' in i or 'director' in i or 'cecil' in i:
+            awardtype[i] = 'Person'
+        else:
+            awardtype[i] = 'Film'
+    
+    for i in dat:
+        awardUseful[i] = [w for w in i.split()]
+
+    for i in dat:
+        if awardtype[i].equals('Person'):
+            
+
+
+    #return nominees
 
 def get_winner(year):
     '''Winners is a dictionary with the hard coded award
