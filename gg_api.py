@@ -42,7 +42,11 @@ def get_presenters(year):
     '''Presenters is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
-    # Your code here
+    if year == 2015:
+        dat = OFFICIAL_AWARDS_1819
+    else:
+        dat = OFFICIAL_AWARDS_1315
+    presenters = presenterGetter(dat)
     return presenters
 
 def pre_ceremony():
