@@ -54,7 +54,7 @@ def get_presenters(year, winners, nominees):
         dat = OFFICIAL_AWARDS_1819
     else:
         dat = OFFICIAL_AWARDS_1315
-    presenters = presenterGetter(dat)
+    presenters = presenterGetter(dat, winners, nominees)
     return presenters
 
 def pre_ceremony():
