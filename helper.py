@@ -6,6 +6,7 @@ import re
 import nameparser
 import Checker
 import constants as c
+from fuzzywuzzy import fuzz
 
 
 
@@ -28,7 +29,7 @@ regex_remove_rt = '^RT @\w+: '
 regex_remove_link = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
 regex_remove_gg = '#GoldenGlobes'
 checker = Checker.checker('Golden Globes', 2013)
-
+stops = ['Oscar', 'Golden', 'Globe', 'Best', 'Actor', 'Award']
 def dataSearch(regex):
     l = []
 
@@ -249,11 +250,11 @@ def get_outliers(d):
     return [key for (key, value) in d.items() if value > mean_value]
 
 def actorFilter(d):
-    vals = [value for value in d if checker.checkActor(value)]
+    vals = [value for value in d if checker.checkActor(value) and not value in stops]
     return vals
 
 def movieFilter(d):
-    vals = [value for value in d if checker.checkMovie(value)]
+    vals = [value for value in d if checker.checkMovie(value) and not value in stops]
     return vals
 
 
@@ -370,7 +371,7 @@ def nomineeGetter(allawards, winners):
     awardUseful = {}
     output = {}
     awardNoms = {}
-    stopword = ['best','-','in','a','role','golden','globes','globe','or','by','an','for','made']
+    stopword = ['best','-','in','a','role','golden','globes','globe','or','by','an','for','made','award']
     for i in dat:
         if 'actor' in i or 'actress' in i or 'director' in i or 'cecil' in i:
             awardtype[i] = 'Person'
@@ -380,14 +381,14 @@ def nomineeGetter(allawards, winners):
     for i in dat:
         ls = [w for w in i.split() if not w in stopword]
         #half = len(ls) // 2 + len(ls) % 2
-        regex = ".*(?:{}).*".format("|".join(ls))
+        regex = ".*(?:{}).*".format("(.*)".join(ls))
         #regex = re.compile("&".join(ls))
         awardUseful[i] = regex
 
     for i in dat:
         #if awardtype[i].equals('Person'):
         regex_curr = awardUseful[i]
-        
+        #print(regex_curr)
         tw = dataSearch2(regex_curr, regex_curr)
         for j in tw:
             tweet = str(j)
@@ -398,9 +399,13 @@ def nomineeGetter(allawards, winners):
                 else:
                     if n == winners[i]: continue
                     output[n] = 1
-        output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:20])
-        final = output2[:6]
+        if awardtype[i] == 'Person':
+            output2 = actorFilter(sorted(output, key = output.get, reverse = True)[:20])
+        else:
+            output2 = movieFilter(sorted(output, key = output.get, reverse = True)[:20])
+        final = output2[:4]
         awardNoms[i] = final
+        #print(final)
     return awardNoms
         
         
@@ -444,5 +449,5 @@ def presenterGetter(allawards, winners, nominees):
     return awardPresenters
 
 # OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
-# out = presenterGetter(OFFICIAL_AWARDS_1315)
+# out = nomineeGetter(OFFICIAL_AWARDS_1315)
 # print(out)
