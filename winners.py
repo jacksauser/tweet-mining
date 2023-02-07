@@ -1,6 +1,7 @@
 from helper import *
 import re
 import Checker
+import config
 
 list_of_awards = ['Best Motion Picture(.*)Drama',
                   'Best Actress(.*)Motion Picture(.*)Drama',
