@@ -58,6 +58,7 @@ map_of_awards = {
     'Best (TV|Television) Series(.*)Musical(.*)Comedy':'best television series - comedy or musical',
     'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy':'best performance by an actor in a television series - comedy or musical'
 }
+stopwords = ['-', 'in', 'a', 'performance','by','an', ]
 regex_name = r'[A-Z][a-z]+\s[A-Z][a-z]+'
 checker = Checker.checker('Golden Globes', 2013)
 
@@ -187,3 +188,5 @@ def getWinners(l):
             result[map_of_awards[key]] = "No winner found"
     return result
 # print(result)
+
+stopwords = ['']

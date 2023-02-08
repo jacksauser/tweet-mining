@@ -6,6 +6,7 @@ import re
 import nameparser
 import Checker
 import constants as c
+import config
 from fuzzywuzzy import fuzz
 
 
