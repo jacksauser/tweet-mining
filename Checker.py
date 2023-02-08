@@ -137,5 +137,5 @@ class checker:
 # Quick testing function
 # actor = input("Enter a name: ")
 # check = checker('Golden Globes',2013)
-# a = check.checkMovie(actor)
+# a = check.isMovie(actor)
 # print(a)

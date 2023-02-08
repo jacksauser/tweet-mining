@@ -38,6 +38,13 @@ awardnamesreal = ['cecil b. demille award', 'best motion picture - drama', 'best
 awardnamestoregex = {}
 awardnames_to_tweets = {}
 award_to_winner = {}
+
+data = json.load(open('gg2013.json'))
+regex_remove = r'^RT\s|\sRT|(?i)goldenglobes|(?i)golden\sglobes'
+regex_remove_rt = '^RT @\w+: '
+regex_remove_link = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
+regex_remove_gg = '#GoldenGlobes'
+
 for i in awardnamesreal:
     result = []
     prev = ""
@@ -62,10 +69,18 @@ for i in awardnamesreal:
             awardtype[i] = 'Person'
         else:
             awardtype[i] = 'Film'
-
 for i in awardnamesreal:
-    regex_curr = awardnamestoregex_jack[i]
-    awardnames_to_tweets[i] = dataSearchNotSplit(regex_curr, ".*")
+    awardnames_to_tweets[i] = []
+
+for d in data:
+    for i in awardnamesreal:
+        regex_curr = awardnamestoregex_jack[i]
+        if re.search(regex_curr,d['text']):
+            t = d['text']
+            t = re.sub(regex_remove_rt, '', t)
+            t = re.sub(regex_remove_link, '', t)
+            t = re.sub(regex_remove_gg, '', t)
+            awardnames_to_tweets[i].append(t)
 
 for i in awardnamesreal:
     tweets = awardnames_to_tweets[i]
@@ -74,6 +89,7 @@ for i in awardnamesreal:
     for tw in tweets:
         #print(tw)
         for n in nominees:
+            #print(n)
             names = re.findall(n,str(tw))
             if n in names:
                 if n in nomineeCount:
@@ -82,5 +98,8 @@ for i in awardnamesreal:
                     nomineeCount[n] = 1
     final = sorted(nomineeCount, key = nomineeCount.get, reverse = True)[:1]
     award_to_winner[i] = final
-    print(i)
-    print(final)
+    #print(i)
+    #print(final)
+
+for i in awardnamesreal:
+    print(cfg.nominees_dict[i])
