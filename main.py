@@ -333,50 +333,90 @@ def compileAwards():
 
     ret = []
     for key in test:
-        # print('-------------------------------------------------------')
         ret1 = test[key][0][0] if test[key][0][1].count(1) > 1 else -1
         if ret1 != -1:
             ret.append(ret1)
-        # print(ret1) if test[key][0][1].count(1) > 1 else ''
-        # print('-------------------------------------------------------')
         
     return ret
 
+def compileNominees():
 
-patterns = [r'nomin(.*)Best', r'Best(.*)nominee']
+    patterns = [r'nomin(.*)Best', r'Best(.*)nominee']
+    stopwords = ['nominee','goes','to','.','at','for','!',',','”']
+    tweets = dataSearch3(patterns)
 
-tweets = dataSearch3(patterns)
-# print(tweets)
-for tweet in tweets:
-    # if 'not' not in tweet:
-    for t in tweets[tweet]:
-        # print(t)
-        tokenized = word_tokenize(t)
-        pos = pos_tag(tokenized)
-        chunk = ne_chunk(pos)
+    ret = {}
+    # print(tweets)
+    for tweet in tweets:
+    
+        for t in tweets[tweet]:
+            # print(t)
+            if 'not' not in t:
+                tokenized = word_tokenize(t)
+                pos = pos_tag(tokenized)
+                chunk = ne_chunk(pos)
+                noms = []
+                for line in chunk:
+                    if type(line) == Tree:
+                        name = ''
+                        for nltk_result_leaf in line.leaves():
+                            name += nltk_result_leaf[0] + ' '
+                        noms.append(name)
+            
+                best_i = None
+                if 'best' in tokenized:
+                    best_i = tokenized.index('best')
+                elif 'Best' in tokenized:
+                    best_i = tokenized.index('Best') 
 
-        for line in chunk:
-            if type(line) == Tree:
-                name = ''
-                for nltk_result_leaf in line.leaves():
-                    name += nltk_result_leaf[0] + ' '
+                if best_i:
+                    # print(tokenized)
+                    award = ''
+                    for i in range(8):
+                        x = best_i + i
+                        # print(i)
+                        if x < len(tokenized):
+                            if tokenized[x].lower() in stopwords:
+                                break
+                            else:
+                                award += ' '+tokenized[x]   
+                    if len(award) < 1:
+                        award = -1
+                    else:
+                        token = word_tokenize(award)
+                        closest_award = ''
+                        highest_count = 0
+                        for key in map_of_awards:
+                            current_count = 0
+                            len_of_token = len(token)
 
-                print(name)
-        # for a in map_of_awards:
-        #     if re.match(a, t):
-        #         print(map_of_awards[a], ':',t)
-        # print('best' in tokenized)
-        best_i = None
-        if 'best' in tokenized:
-            best_i = tokenized.index('best')
-        elif 'Best' in tokenized:
-            best_i = tokenized.index('Best') 
+                            real_award = map_of_awards[key]
+                            
+                            for word in token:
+                                if word in real_award:
+                                    current_count += 1
+                            if current_count == len_of_token:
+                                if real_award in ret:
+                                    for n in noms:
+                                        if n not in ret[real_award]:
+                                            ret[real_award].append(n)
+                                else:
+                                    ret[real_award] = noms
+                            else:
+                                if current_count > highest_count:
+                                    highest_count = current_count
+                                    closest_award = real_award
+                        if closest_award != '':
+                            if closest_award in ret:
+                                for n in noms:
+                                    if n not in ret[closest_award]:
+                                        ret[closest_award].append(n)
+                            else:
+                                ret[closest_award] = noms
+    return ret
 
-        if best_i:
-            print(tokenized)
-            # print(best_i,":",len(tokenized))
-            # print(tokenized[best_i])
-            # print(tokenized[best_i],tokenized[best_i+1])
-            print(tokenized[best_i],tokenized[best_i+1],tokenized[best_i+2])
+print(compileNominees())
 
+
+                
 
