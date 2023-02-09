@@ -31,6 +31,7 @@ map_of_awards = {
     'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy':'best performance by an actor in a television series - comedy or musical'
 }
 awardnamestoregex_jack = {v: k for k, v in map_of_awards.items()}
+print(awardnamestoregex_jack)
 
 data = json.load(open('gg2013.json'))
 regex_remove = r'^RT\s|\sRT|(?i)goldenglobes|(?i)golden\sglobes'
@@ -115,6 +116,7 @@ tweetdict = categorize_tweets(awardnamesreal)
 #d = get_noms_from_awards(awardnamesreal,tweetdict)
 for i in awardnamesreal:
     print(i)
+
     print(len(tweetdict[awardnamestoregex_jack[i]]))
 
 
