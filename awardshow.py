@@ -27,7 +27,7 @@ class AwardShow:
         award_dict = {award.awardName: {"nominees": award.nominees, "presenters": award.presenters, "winner": award.winner} for award in self.awards}
         x = {"hosts": self.host, "award_data": award_dict}
         jsonString = json.dumps(x)
-        with open('gg%s.json' % self.year, 'w', encoding='utf8') as jsonFile:
+        with open('goldenglobes%s.json' % self.year, 'w', encoding='utf8') as jsonFile:
             jsonFile.write(jsonString)
             jsonFile.close()
         return jsonFile
