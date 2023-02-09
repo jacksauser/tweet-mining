@@ -102,7 +102,7 @@ def get_winner_from_noms(awardnames, tweet_dict):
                     else:
                         nomineeCount[n] = 1
         final = sorted(nomineeCount, key = nomineeCount.get, reverse = True)[:1]
-        award_to_winner[i] = final
+        award_to_winner[i] = str(final)
 
     return award_to_winner
 
@@ -167,12 +167,12 @@ def get_presenters_from_awards(awardnames, tweet_dict):
         award_to_presenter[i] = final[:2]
     return award_to_presenter
 
-awardnamesreal = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
-tweetdict = categorize_tweets(awardnamesreal)
-d = get_presenters_from_awards(awardnamesreal,tweetdict)
-for i in awardnamesreal:
-    print(i)
-    print(d[i])
+# awardnamesreal = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
+# tweetdict = categorize_tweets(awardnamesreal)
+# d = get_presenters_from_awards(awardnamesreal,tweetdict)
+# for i in awardnamesreal:
+#     print(i)
+#     print(d[i])
 
 
         #     for n in nominees:
