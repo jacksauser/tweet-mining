@@ -43,19 +43,22 @@ def categorize_tweets(awards):
     awardnamesreal = awards
     for i in awardnamesreal:
         regexlist.append(awardnamestoregex_jack[i])
-
+    tweets = {}
     award_tweet_dict = dataSearch3(regexlist)
-    return award_tweet_dict
+    for i in regexlist:
+        official = map_of_awards[i]
+        tweets[official] = award_tweet_dict[i]
+    return tweets
 
 def get_winner_from_noms(awardnames, tweet_dict):
     award_to_winner = {}
     award_tweet_dict = tweet_dict
     awardnamesreal = awardnames
     for i in awardnamesreal:
-        awardregex = awardnamestoregex_jack[i]
-        if awardregex not in award_tweet_dict:
+        #awardregex = awardnamestoregex_jack[i]
+        if i not in award_tweet_dict:
             continue
-        tweetlist = award_tweet_dict[awardregex]
+        tweetlist = award_tweet_dict[i]
         nominees = cfg.nominees_dict[i]
         nomineeCount = {}
         for tw in tweetlist:
@@ -80,10 +83,10 @@ def get_noms_from_awards(awardnames, tweet_dict):
             awardtype = 'Person'
         else:
             awardtype = 'Film'
-        awardregex = awardnamestoregex_jack[i]
-        if awardregex not in award_tweet_dict:
+        #awardregex = awardnamestoregex_jack[i]
+        if i not in award_tweet_dict:
             continue
-        tweetlist = award_tweet_dict[awardregex]
+        tweetlist = award_tweet_dict[i]
         names = []
         for tw in tweetlist:
             text = re.sub(awardregex,'',tw)
