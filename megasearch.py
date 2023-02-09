@@ -14,7 +14,7 @@ map_of_awards = {
     'Best Director(.*)Motion Picture':'best director - motion picture',
     'Cecil B. DeMille Award' : 'cecil b. demille award',
     'Best Supporting Actor(.*)Motion Picture':'best performance by an actor in a supporting role in a motion picture',
-    'Best Mini[\s-]*series(.*)(TV|Television) Film':'best mini-series or motion picture made for television',
+    'Best Mini(.*)series(.*)(TV|Television) Film':'best mini-series or motion picture made for television',
     'Best Supporting Actor(.*)Series(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)':'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television',
     'Best (Performance)?(.*)Actor(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)':'best performance by an actor in a mini-series or motion picture made for television',
     'Best Motion Picture(.*)Musical(.*)Comedy':'best motion picture - comedy or musical',
@@ -30,7 +30,36 @@ map_of_awards = {
     'Best (TV|Television) Series(.*)Musical(.*)Comedy':'best television series - comedy or musical',
     'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy':'best performance by an actor in a television series - comedy or musical'
 }
-awardnamestoregex_jack = {v: k for k, v in map_of_awards.items()}
+
+awardnamestoregex_jack = {
+    'best motion picture - drama':'Best Motion Picture(.*)Drama' ,
+    'best performance by an actress in a motion picture - drama':'Best Actress(.*)Motion Picture(.*)Drama',
+    'best performance by an actor in a motion picture - comedy or musical':'Best Actor(.*)Motion Picture(.*)Musical(.*)Comedy',
+    'best animated feature film':'Best Animated Feature Film',
+    'best performance by an actress in a television series - drama':'Best (Performance)?(.*)Actress(.*)(TV|Television) Series(.*)Drama',
+    'best performance by an actress in a mini-series or motion picture made for television':'Best(.*)(Performance)?(.*)Actress(.*)(Mini[\s-]*series)?(.*)(Motion Picture|Movie)(.*)(for|made for)?(.*)(TV|Television)',
+    'best performance by an actor in a television series - drama':'Best (Performance)?(.*)Actor(.*)(TV|Television) Series(.*)Drama',
+    'best performance by an actor in a motion picture - drama':'Best Actor(.*)Motion Picture(.*)Drama',
+    'best director - motion picture':'Best Director(.*)Motion Picture',
+    'cecil b. demille award':'Cecil B. DeMille Award',
+    'best performance by an actor in a supporting role in a motion picture':'Best Supporting Actor(.*)Motion Picture',
+    'best mini-series or motion picture made for television':'Best Mini(.*)series(.*)(TV|Television) Film',
+    'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television':'Best Supporting Actor(.*)Series(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
+    'best performance by an actor in a mini-series or motion picture made for television':'Best (Performance)?(.*)Actor(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
+    'best motion picture - comedy or musical':'Best Motion Picture(.*)Musical(.*)Comedy',
+    'best performance by an actress in a motion picture - comedy or musical':'Best Actress(.*)Motion Picture(.*)Musical(.*)Comedy',
+    'best screenplay - motion picture':'Best Screenplay(.*)Motion Picture',
+    'best original score - motion picture':'Best Original Score',
+    'best performance by an actress in a television series - comedy or musical':'Best (Performance)?(.*)Actress(.*)(TV|Television) Series(.*)Musical(.*)Comedy',
+    'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television':'Best Supporting Actress(.*)Series(.*)Mini[\s-]*series(.*)Motion Picture(.*)(for|made for) (TV|Television)',
+    'best television series - drama':'Best (TV|Television) Series(.*)Drama',
+    'best performance by an actress in a supporting role in a motion picture':'Best Supporting Actress(.*)Motion Picture',
+    'best original song - motion picture':'Best Original Song',
+    'best foreign language film':'Best Foreign Language Film',
+    'best television series - comedy or musical':'Best (TV|Television) Series(.*)Musical(.*)Comedy',
+    'best performance by an actor in a television series - comedy or musical':'Best Actor(.*)(TV|Television) Series(.*)Musical(.*)Comedy'
+}
+#awardnamestoregex_jack = {v: k for k, v in map_of_awards.items()}
 
 data = json.load(open('gg2013.json'))
 regex_remove = r'^RT\s|\sRT|(?i)goldenglobes|(?i)golden\sglobes'
@@ -47,7 +76,10 @@ def categorize_tweets(awards):
     award_tweet_dict = dataSearch3(regexlist)
     for i in regexlist:
         official = map_of_awards[i]
-        tweets[official] = award_tweet_dict[i]
+        if i in award_tweet_dict:
+            tweets[official] = award_tweet_dict[i]
+        else:
+            tweets[official] = []
     return tweets
 
 def get_winner_from_noms(awardnames, tweet_dict):
@@ -83,7 +115,7 @@ def get_noms_from_awards(awardnames, tweet_dict):
             awardtype = 'Person'
         else:
             awardtype = 'Film'
-        #awardregex = awardnamestoregex_jack[i]
+        awardregex = awardnamestoregex_jack[i]
         if i not in award_tweet_dict:
             continue
         tweetlist = award_tweet_dict[i]
@@ -113,12 +145,34 @@ def get_noms_from_awards(awardnames, tweet_dict):
 
     return award_to_noms
 
+def get_presenters_from_awards(awardnames, tweet_dict):
+    award_to_presenter = {}
+    award_tweet_dict = tweet_dict
+    awardnamesreal = awardnames
+    for i in awardnamesreal:
+        out = {}
+        #awardregex = awardnamestoregex_jack[i]
+        if i not in award_tweet_dict:
+            continue
+        tweetlist = award_tweet_dict[i]
+        for tw in tweetlist:
+            if re.search(c.regex_present,str(tw).lower()):
+                names = re.findall(regex_name,str(tw))
+                for n in names:
+                    if n in out:
+                        out[n]+=1
+                    else:
+                        out[n] = 1
+        final = actorFilter(sorted(out, key = out.get, reverse = True)[:5])
+        award_to_presenter[i] = final[:2]
+    return award_to_presenter
+
 awardnamesreal = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
 tweetdict = categorize_tweets(awardnamesreal)
-#d = get_noms_from_awards(awardnamesreal,tweetdict)
+d = get_presenters_from_awards(awardnamesreal,tweetdict)
 for i in awardnamesreal:
     print(i)
-    print(len(tweetdict[awardnamestoregex_jack[i]]))
+    print(d[i])
 
 
         #     for n in nominees:
