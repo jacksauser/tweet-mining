@@ -20,10 +20,10 @@ def get_hosts(year):
 def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
-    awards = []
-    return findAwards()
+    awards = compileAwards()
+    return awards
 
-def get_nominees(year, winners, tweetdict):
+def get_nominees(year, tweetdict):
     '''Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
