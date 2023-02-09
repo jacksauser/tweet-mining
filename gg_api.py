@@ -21,7 +21,7 @@ def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
     awards = []
-    return findAwards()
+    return compileAwards()
 
 def get_nominees(year, winners, tweetdict):
     '''Nominees is a dictionary with the hard coded award
