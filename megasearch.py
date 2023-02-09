@@ -97,8 +97,8 @@ def get_noms_from_awards(awardnames, tweet_dict):
                     names.append(r)
         if len(names) > 0:
             ls = []
-            if len(names)<5:
-                award_to_noms[i] = names
+            if len(set(names))<5:
+                award_to_noms[i] = list(set(names))
             else:
                 for j in range(5):
                     curr = next(iter(getDistribution(names)))
