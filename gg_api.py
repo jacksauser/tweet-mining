@@ -3,6 +3,7 @@ from helper import *
 from main import *
 from winners import *
 from awardshow import AwardShow, Award
+from megasearch import *
 
 
 
@@ -22,7 +23,7 @@ def get_awards(year):
     awards = []
     return findAwards()
 
-def get_nominees(year, winners):
+def get_nominees(year, winners, tweetdict):
     '''Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
@@ -32,11 +33,12 @@ def get_nominees(year, winners):
     else:
         dat = OFFICIAL_AWARDS_1315
     
-    nominees = nomineeGetter(dat, winners)
-    
+    #nominees = nomineeGetter(dat, winners)
+    nominees = get_noms_from_awards(dat, tweetdict)
+
     return nominees
 
-def get_winner(year):
+def get_winner(year, tweetdict):
     '''Winners is a dictionary with the hard coded award
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
@@ -45,7 +47,7 @@ def get_winner(year):
     else:
         dat = OFFICIAL_AWARDS_1315
 
-    return getWinners(dat)
+    return get_winner_from_noms(dat, tweetdict)
 
 def get_presenters(year, winners, nominees):
     '''Presenters is a dictionary with the hard coded award
@@ -76,33 +78,43 @@ def main():
     and then run gg_api.main(). This is the second thing the TA will
     run when grading. Do NOT change the name of this function or
     what it returns.'''
+    tweetdict = categorize_tweets(OFFICIAL_AWARDS_1315)
     hosts = get_hosts(2013)
     awards = get_awards(2013)
-    winners = get_winner(2013)
-    nominees = get_nominees(2013, winners)
+    winners = get_winner(2013, tweetdict)
+    nominees = get_nominees(2013, tweetdict)
     presenters = get_presenters(2013, winners, nominees)
 
     gg = awardshow.AwardShow('Golden Globes', 2013)
     for i in hosts:
         gg.addHost(i)
-    ind = 0
+    # ind = 0
     for i in OFFICIAL_AWARDS_1315:
         x = awardshow.Award()
-        if ind >= len(awards):
-            x.awardName = i
+        # if ind >= len(awards):
+        #     x.awardName = i
+        # else:
+        #     rat = 0
+        #     name = ''
+        #     for j in awards:
+        #         rat2 = fuzz.ratio(j,i)
+        #         if rat2>rat:
+        #             rat = rat2
+        #             name = j
+        x.awardName = i
+        # ind+=1
+        if i in nominees:
+            x.nominees = nominees[i]
         else:
-            rat = 0
-            name = ''
-            for j in awards:
-                rat2 = fuzz.ratio(j,i)
-                if rat2>rat:
-                    rat = rat2
-                    name = j
-            x.awardName = name
-        ind+=1
-        x.nominees = nominees[i]
-        x.presenters = presenters[i]
-        x.winner = winners[i]
+            x.nominees = []
+        if i in presenters:
+            x.presenters = presenters[i]
+        else:
+            x.presenters = []
+        if i in winners:
+            x.winner = winners[i]
+        else:
+            x.winner = []
         gg.addAward(x)
     
     gg.print_readable()
