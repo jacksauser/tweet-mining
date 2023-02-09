@@ -78,8 +78,8 @@ def searchForActor(s):
             maybe_names.append(re.sub(r'\s+$','',name))
     
     for n in maybe_names:
-        actor = checker.isActor(n)
-        if actor and actor != -1 and n != None and re.search(regex_name, n):
+        actor = checker.checkActor(n)
+        if actor and actor != 0 and n != None and re.search(regex_name, n):
             known_actors.append(n)
             return n
         else:
@@ -91,8 +91,9 @@ def searchForActorAgain(s):
     list_of_words = s.split(' ')
     for i in range(len(list_of_words)-1):
         name = list_of_words[i] + ' '+list_of_words[i+1]
-        actor = checker.isActor(name)
-        if actor and actor != -1 and actor == name:
+        actor = checker.checkActor(name)
+        if actor and actor != 0 and actor == name:
+            #known_actors.append(actor)
             return name
     
 

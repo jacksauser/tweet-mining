@@ -73,6 +73,23 @@ def dataSearch2(regex1, regex2):
                 #     l.append(re.sub(r'\s+$','',name))
     return l
 
+def dataSearch3(ls):
+    d = {}
+    for i in data: 
+        t = i['text']
+        u = i['user']
+        for j in ls:
+            if re.search(j, t):
+                t = re.sub(regex_remove_rt, '', t)
+                t = re.sub(regex_remove_link, '', t)
+                t = re.sub(regex_remove_gg, '', t)
+                if j in d:
+                    d[j].append(t)
+                else:
+                    d[j] = []
+                    d[j].append(t)
+    return d
+
 def dataSearchNotSplit(regex1, regex2):
     l = []
 
