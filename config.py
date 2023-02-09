@@ -19,7 +19,7 @@ for key in awards:
 
 
 #print(helper.presenterGetter(awards, winners_dict, nominees_dict))
-print()
+#print()
 
-print()
-print(presenters_dict)
+#print()
+#print(presenters_dict)

@@ -49,7 +49,7 @@ def get_winner(year, tweetdict):
 
     return get_winner_from_noms(dat, tweetdict)
 
-def get_presenters(year, winners, nominees):
+def get_presenters(year, tweetdict):
     '''Presenters is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
@@ -57,7 +57,7 @@ def get_presenters(year, winners, nominees):
         dat = OFFICIAL_AWARDS_1819
     else:
         dat = OFFICIAL_AWARDS_1315
-    presenters = presenterGetter(dat, winners, nominees)
+    presenters = get_presenters_from_awards(dat, tweetdict)
     return presenters
 
 def pre_ceremony():
@@ -83,7 +83,7 @@ def main():
     awards = get_awards(2013)
     winners = get_winner(2013, tweetdict)
     nominees = get_nominees(2013, tweetdict)
-    presenters = get_presenters(2013, winners, nominees)
+    presenters = get_presenters(2013, tweetdict)
 
     gg = awardshow.AwardShow('Golden Globes', 2013)
     for i in hosts:
@@ -114,11 +114,11 @@ def main():
         if i in winners:
             x.winner = winners[i]
         else:
-            x.winner = []
+            x.winner = ""
         gg.addAward(x)
     
     gg.print_readable()
-
+    gg.make_json
 
     return
 
