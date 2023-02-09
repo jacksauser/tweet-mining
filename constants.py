@@ -1,7 +1,6 @@
 # regex list 
 regex_host = r'(?i)the\shosts'
 regex_award  = r'(?i)award for'
-regex_presenter = r'(?i)presenter'
 regex_nominee = r'(?i)nominee for'
 regex_winner = r'(?i)winner|won'
 regex_remove = r'^RT\s|\sRT|(?i)goldenglobes|(?i)golden\sglobes'
@@ -15,4 +14,7 @@ regex_name = r'[A-Z][a-z]+\s[A-Z][a-z]+'
 regex_worst_dressed = r'(?i)worst\sdressed|ugly|gross|bad\slooking|bad\soutfit|disgusting|unappealing'
 
 regex_award_exact = r'(?i)best\sperformances\sby\san\sactor\sin\sa\ssupporting\srole\sin\sa\smotion\spicture'
-regex_presenter = r'(?i)present'
+
+regex_presenter = r'(?i)[A-Z][a-z]+\s[A-Z][a-z]+present|presented\sby+[A-Z][a-z]+\s[A-Z][a-z]+'
+regex_present = r'(?i)introduc|present'
+regex_presenters = r'(?i)[A-Z][a-z]+\s[A-Z][a-z]+\sand+\s[A-Z][a-z]+\s[A-Z][a-z]+\spresent|presented\sby+\s[A-Z][a-z]+\s[A-Z][a-z]+\sand+\s[A-Z][a-z]+'
