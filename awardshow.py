@@ -23,10 +23,14 @@ class AwardShow:
         print_awards(self.awards)
         additional_goals(c.regex_dressed, c.regex_worst_dressed, c.regex_name, c.regex_funniest, c.regex_deserve)
 
-    def print_json(self):
+    def make_json(self):
         award_dict = {award.awardName: {"nominees": award.nominees, "presenters": award.presenters, "winner": award.winner} for award in self.awards}
         x = {"hosts": self.host, "award_data": award_dict}
-        print(x)
+        jsonString = json.dumps(x)
+        with open('goldenglobes%s.json' % self.year, 'w', encoding='utf8') as jsonFile:
+            jsonFile.write(jsonString)
+            jsonFile.close()
+        return jsonFile
 
     def addHost(self, s):
         self.host.append(s)
