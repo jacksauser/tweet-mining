@@ -91,16 +91,7 @@ def main():
     # ind = 0
     for i in OFFICIAL_AWARDS_1315:
         x = awardshow.Award()
-        # if ind >= len(awards):
-        #     x.awardName = i
-        # else:
-        #     rat = 0
-        #     name = ''
-        #     for j in awards:
-        #         rat2 = fuzz.ratio(j,i)
-        #         if rat2>rat:
-        #             rat = rat2
-        #             name = j
+
         x.awardName = i
         # ind+=1
         if i in nominees:
@@ -118,7 +109,12 @@ def main():
         gg.addAward(x)
     
     gg.print_readable()
-    gg.make_json
+
+    print('Award names mined')
+    for i in awards:
+        print(i)
+
+    gg.make_json()
 
     return
 

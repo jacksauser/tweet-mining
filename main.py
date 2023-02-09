@@ -345,38 +345,39 @@ def compileAwards():
 
 patterns = [r'nomin(.*)Best', r'Best(.*)nominee']
 
-tweets = dataSearch3(patterns)
-# print(tweets)
-for tweet in tweets:
-    # if 'not' not in tweet:
-    for t in tweets[tweet]:
-        # print(t)
-        tokenized = word_tokenize(t)
-        pos = pos_tag(tokenized)
-        chunk = ne_chunk(pos)
 
-        for line in chunk:
-            if type(line) == Tree:
-                name = ''
-                for nltk_result_leaf in line.leaves():
-                    name += nltk_result_leaf[0] + ' '
+# tweets = dataSearch3(patterns)
+# # print(tweets)
+# for tweet in tweets:
+#     # if 'not' not in tweet:
+#     for t in tweets[tweet]:
+#         # print(t)
+#         tokenized = word_tokenize(t)
+#         pos = pos_tag(tokenized)
+#         chunk = ne_chunk(pos)
 
-                print(name)
-        # for a in map_of_awards:
-        #     if re.match(a, t):
-        #         print(map_of_awards[a], ':',t)
-        # print('best' in tokenized)
-        best_i = None
-        if 'best' in tokenized:
-            best_i = tokenized.index('best')
-        elif 'Best' in tokenized:
-            best_i = tokenized.index('Best') 
+#         for line in chunk:
+#             if type(line) == Tree:
+#                 name = ''
+#                 for nltk_result_leaf in line.leaves():
+#                     name += nltk_result_leaf[0] + ' '
 
-        if best_i:
-            print(tokenized)
-            # print(best_i,":",len(tokenized))
-            # print(tokenized[best_i])
-            # print(tokenized[best_i],tokenized[best_i+1])
-            print(tokenized[best_i],tokenized[best_i+1],tokenized[best_i+2])
+#                 print(name)
+#         # for a in map_of_awards:
+#         #     if re.match(a, t):
+#         #         print(map_of_awards[a], ':',t)
+#         # print('best' in tokenized)
+#         best_i = None
+#         if 'best' in tokenized:
+#             best_i = tokenized.index('best')
+#         elif 'Best' in tokenized:
+#             best_i = tokenized.index('Best') 
+
+#         if best_i:
+#             print(tokenized)
+#             # print(best_i,":",len(tokenized))
+#             # print(tokenized[best_i])
+#             # print(tokenized[best_i],tokenized[best_i+1])
+#             print(tokenized[best_i],tokenized[best_i+1],tokenized[best_i+2])
 
 

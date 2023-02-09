@@ -16,10 +16,3 @@ nominees_dict = {key:all_dict[key]["nominees"] for key in awards}
 for key in awards:
     nominees_dict[key].append(winners_dict[key])
 
-
-
-#print(helper.presenterGetter(awards, winners_dict, nominees_dict))
-#print()
-
-#print()
-#print(presenters_dict)

@@ -38,24 +38,3 @@ class AwardShow:
     def addAward(self, a):
         if isinstance(a, Award):
             self.awards.append(a)
-
-# a = AwardShow
-# a.showName = "Golden Globes 2013"
-# a.year = 7357
-# a.host = ["Tina Fey", "Amy Poehler"]
-
-# b = Award
-# b.awardName = "best screenplay - motion picture"
-# b.winner = "Django Unchained"
-# b.nominees = ["zero dark thirty", "lincoln", "silver linings playbook", "argo"]
-# b.presenters = ["robert pattinson", "amanda seyfried"]
-
-# c = Award
-# c.awardName = "best director - motion picture"
-# c.winner = "ben affleck"
-# c.nominees = ["kathryn bigelow", "ang lee", "steven spielberg", "quentin tarantino"]
-# c.presenters = ["halle berry"]
-
-# a.awards = [b, c]
-
-# print(a.make_json(a))
